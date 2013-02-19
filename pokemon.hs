@@ -122,9 +122,17 @@ relacionAtaqueTipo x
   | Water    <- x = ([Ground, Rock, Fire], [Water, Grass, Dragon], [])
 
 
-daño :: Monstruo -> Monstruo -> Ataque -> Int
-daño atacante defensor ataque = golpeTotal 
+daño :: Monstruo -> Monstruo -> Ataque ->  Double
+daño atacante defensor ataque = golpeFinal 
   where
+   golpeFinal = multiplicador (fromIntegral golpeTotal)
+   multiplicador golpe = case tipoEspecie ( especie atacante ) of
+      Left tipo          ->  if tipoAtaque ataque == tipo
+                             then   (golpe) * 1.5
+                             else golpe
+      Right(tipo1,tipo2) ->  if  tipoAtaque ataque == tipo1 ||tipoAtaque ataque == tipo2 
+                             then   (golpe) * 1.5
+                             else golpe
    golpeTotal =  modificadorAtacante golpe
    golpe = ((fuerzaAtacante * poderAtaque * lucha ) `div` 50 )+ 2
    fuerzaAtacante = (2 * nivel atacante `div` 5 ) + 2
@@ -132,7 +140,6 @@ daño atacante defensor ataque = golpeTotal
    lucha = case forma ataque of
       True -> ataqueM atacante `div` defensaM defensor
       False -> ataqueEM atacante `div`defensaEM defensor
-   
    modificadorAtacante golpe =  case tipoEspecie ( especie atacante ) of 
       Left tipo ->  if primeraLista tipo
                     then golpe * 2
