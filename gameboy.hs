@@ -3,7 +3,7 @@ import System.IO
 
 menu :: a -> IO()
 menu a = do
-    -- print oraculo
+    
     putStrLn
       $  "\n "
       ++ "Que quieres hacer? \n"  
@@ -15,8 +15,21 @@ menu a = do
       ++ "6) Consultar Estadisticas"
     putStr "Su Seleccion [1-6]: "
     hFlush stdout
-    --seleccion <- getLine 
+    seleccion <- getLine 
 
-
+    case seleccion of 
+      "1" -> putStr "\n Su Seleccion [1]: "
+      "2" -> putStr "\n Su Seleccion [2]: "
+      "3" -> putStr "\n Su Seleccion [3]: "
+      "4" -> putStr "\n Su Seleccion [4]: "
+      "5" -> putStr "\n Su Seleccion [5]: "
+      "6" -> putStr "\n Su Seleccion [6]: "
+      _  -> putStr "\n: "
+       
+       
+      
+    menu 24
+    
+    
 main :: IO ()
 main = menu 24 
