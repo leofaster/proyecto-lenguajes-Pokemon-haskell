@@ -12,6 +12,8 @@ module Pokemon
   , buscarEspecie
   , imprimirEspecie
   , buscarAtaque
+  , crearEntrenador
+  , crearCampoBatalla
   )
 where
 
