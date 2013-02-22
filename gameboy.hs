@@ -1,8 +1,11 @@
 import Pokemon
 import System.IO
+import System.Environment
+import Data.List.Split
 
 menu :: a -> IO()
 menu a = do
+
     
     putStrLn
       $  "\n "
@@ -32,4 +35,10 @@ menu a = do
     
     
 main :: IO ()
-main = menu 24 
+main = do 
+    argumentos <- getLine
+    let  especies = readFile argumentos 
+   -- lines especies
+   -- return (map (splitOn ",") (lines especies))     -- Tomarlo en cuenta para crearEspecie. Ya esta la lista de especies.               
+
+    menu 24
