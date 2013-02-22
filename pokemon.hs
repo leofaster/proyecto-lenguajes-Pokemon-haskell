@@ -7,6 +7,11 @@ module Pokemon
   , estadisticaDefensaE
   , estadisticaVelocidad
   , daño
+  , crearPokedex
+  , crearAtaquedex
+  , buscarEspecie
+  , imprimirEspecie
+  , buscarAtaque
   )
 where
 
