@@ -115,10 +115,10 @@ data Ataque
   
 crearAtaque :: [String] -> Ataque
 crearAtaque datos = Ataque {nombreAtaque = datos!!0,
-                        tipoAtaque = read $ datos!!1::Tipo,
-                        forma = read $ datos!!2::Bool,
-                        puntoPoder = read $ datos!!3::Int,
-                        poder = read $ datos!!4::Int}
+                           tipoAtaque = read $ datos!!1::Tipo,
+                           forma = read $ datos!!2::Bool,
+                           puntoPoder = read $ datos!!3::Int,
+                           poder = read $ datos!!4::Int}
 
 
 buscarAtaque :: [Ataque] -> String -> Int -> Int -> Maybe Ataque
@@ -267,11 +267,15 @@ daño atacante defensor ataque = golpeFinal
                                        if terceraLista tipo1 || terceraLista tipo2
                                        then 0
                                        else golpe 
-      
-      
+  
    primeraLista tipo = elem tipo ((\(a,b,c)-> a)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    segundaLista tipo = elem tipo ((\(a,b,c)-> b)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    terceraLista tipo = elem tipo ((\(a,b,c)-> c)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    
-crearPokedex :: [Especie] -> Array Int Especie
-crearPokedex listaEspecies = array (1,251) [(i, x) | i <- [1..251], x <- [(!!) listaEspecies (i-1)]]
+crearPokedex :: [[String]] -> Array Int Especie
+crearPokedex listaEspecies = array (1,251) [(i, x) | i <- [1..251], x <- [(!!) especies (i-1)]]
+   where
+      especies = map crearEspecie listaEspecies
+      
+crearAtaquedex :: [[String]] -> [Ataque]
+crearAtaquedex listaAtaques = map crearAtaque listaAtaques
