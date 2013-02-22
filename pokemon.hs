@@ -122,13 +122,13 @@ crearAtaque datos = Ataque {nombreAtaque = datos!!0,
 
 
 buscarAtaque :: [Ataque] -> String -> Int -> Int -> Maybe Ataque
-buscarAtaque ataqueDex nombreAtaque cotaMinima cotaMaxima
+buscarAtaque ataqueDex nombre cotaMinima cotaMaxima
    | cotaMaxima < cotaMinima = Nothing
-   | nombreAtaque $ ataqueDex!!mid > nombreAtaque = buscarAtaque ataqueDex nombreAtaque cotaMinima (mid-1)
-   | nombreAtaque $ ataqueDex!!mid < nombreAtaque = buscarAtaque ataqueDex nombreAtaque (mid+1) cotaMaxima
-   | otherwise = Just ataqueDex!!mid 
+   | nombreAtaque (ataqueDex!!mid) > nombre = buscarAtaque ataqueDex nombre cotaMinima (mid-1)
+   | nombreAtaque (ataqueDex!!mid) < nombre = buscarAtaque ataqueDex nombre (mid+1) cotaMaxima
+   | otherwise = Just (ataqueDex!!mid) 
       where
-         mid = cotaMinima + ((cotaMaxima – cotaMinima) `div` 2)
+         mid = cotaMinima + ((cotaMaxima-cotaMinima) `div` 2)
 
    
 data Monstruo
@@ -142,31 +142,39 @@ data Monstruo
     , ataqueEM :: Int
     , defensaEM :: Int
     , velocidadM :: Int
-    , ataque1 :: Ataque 
-    , ataque2 :: Ataque
-    , ataque3 :: Ataque
-    , ataque4 :: Ataque
+    , ataque1 :: Maybe Ataque 
+    , ataque2 :: Maybe Ataque
+    , ataque3 :: Maybe Ataque
+    , ataque4 :: Maybe Ataque
     }
   deriving (Read, Show)
   
--- crearMonstruo :: Array Int Especie -> [Ataque] -> [String] -> Monstruo
--- crearMonstruo pokedex ataqueDex datos = 
---    Monstruo {especie = especieMonstruo,
---       sobreNombre = datos!!1,
---       nivel = nivelMonstruo,
---       hp = maxHp especieMonstruo nivelMonstruo,
---       ataqueM = estadisticaAtaque especieMonstruo nivelMonstruo,
---       defensaM = estadisticaDefensa especieMonstruo nivelMonstruo,
---       ataqueEM = estadisticaAtaqueE especieMonstruo nivelMonstruo,
---       defensaEM = estadisticaDefensaE especieMonstruo nivelMonstruo,
---       velocidadM = estadisticaVelocidad especieMonstruo nivelMonstruo,
---       ataque1 = buscarAtaque ataqueDex datos!!3 0 length ataqueDex,
---       ataque2 =,
---       ataque3 =,
---       ataque4 =}
---    where
---       especieMonstruo = buscarEspecie pokedex read $ datos!!0::Int
---       nivelMonstruo = read $ datos!!2::Int
+crearMonstruo :: Array Int Especie -> [Ataque] -> [String] -> Monstruo
+crearMonstruo pokedex ataqueDex datos = 
+   Monstruo {especie = especieMonstruo,
+      sobreNombre = datos!!1,
+      nivel = nivelMonstruo,
+      hp = maxHp especieMonstruo nivelMonstruo,
+      ataqueM = estadisticaAtaque especieMonstruo nivelMonstruo,
+      defensaM = estadisticaDefensa especieMonstruo nivelMonstruo,
+      ataqueEM = estadisticaAtaqueE especieMonstruo nivelMonstruo,
+      defensaEM = estadisticaDefensaE especieMonstruo nivelMonstruo,
+      velocidadM = estadisticaVelocidad especieMonstruo nivelMonstruo,
+      ataque1 = buscarAtaque ataqueDex (datos!!3) 0 longitudAtaques,
+      ataque2 = 
+         if null $ datos!!4 then Nothing
+         else buscarAtaque ataqueDex (datos!!4) 0 longitudAtaques,
+      ataque3 =
+         if null $ datos!!5 then Nothing
+         else buscarAtaque ataqueDex (datos!!5) 0 longitudAtaques,
+      ataque4 =
+         if null $ datos!!6 then Nothing
+         else buscarAtaque ataqueDex (datos!!6) 0 longitudAtaques}
+   where
+      especieMonstruo = buscarEspecie pokedex numeroEspecie
+      nivelMonstruo = read $ datos!!2::Int
+      numeroEspecie = read $ datos!!0::Int
+      longitudAtaques = length ataqueDex
   
 maxHp ::  Especie -> Int -> Int
 maxHp especie nivel = ((31 + 2 * hpEspecie especie + 255 `quot` 4 + 100) * nivel `div` 100 ) + 10  
