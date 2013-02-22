@@ -284,3 +284,23 @@ crearPokedex listaEspecies = array (1,251) [(i, x) | i <- [1..251], x <- [(!!) e
       
 crearAtaquedex :: [[String]] -> [Ataque]
 crearAtaquedex listaAtaques = map crearAtaque listaAtaques
+
+crearEntrenador :: Array Int Especie -> [Ataque] -> [[String]] -> [Monstruo]
+crearEntrenador pokedex ataquedex listaMonstruos = map (crearMonstruo pokedex ataquedex) listaMonstruos
+
+
+data CampoBatalla
+   = CampoBatalla
+    { pokedex :: Array Int Especie
+    , ataquedex :: [Ataque] 
+    , entrenador1 :: [Monstruo]
+    , entrenador2 :: [Monstruo]
+    }
+  deriving Show
+  
+crearCampoBatalla :: Array Int Especie -> [Ataque] -> [Monstruo] -> [Monstruo] -> CampoBatalla
+crearCampoBatalla especies ataques trainer1 trainer2 =
+   CampoBatalla {pokedex = especies,
+               ataquedex = ataques,
+               entrenador1 = trainer1,
+               entrenador2 = trainer2}
