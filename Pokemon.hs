@@ -1,5 +1,9 @@
 module Pokemon
   (Tipo (Bug, Dark, Dragon, Electric, Fighting, Fire, Flying, Ghost, Grass, Ground, Ice, Normal, Poison, Psychic, Rock, Steel, Water)
+  , CampoBatalla
+  , Especie
+  , Ataque
+  , Monstruo
   , maxHp
   , estadisticaAtaque
   , estadisticaDefensa
