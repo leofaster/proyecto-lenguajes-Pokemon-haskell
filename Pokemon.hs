@@ -15,6 +15,7 @@ module Pokemon
   , buscarAtaque
   , crearEntrenador
   , crearCampoBatalla
+  , imprimirCampoBatalla
   )
 where
 
@@ -364,3 +365,10 @@ crearCampoBatalla especies ataques trainer1 trainer2 =
                ataquedex = ataques,
                entrenador1 = trainer1,
                entrenador2 = trainer2}
+               
+imprimirCampoBatalla :: CampoBatalla -> IO()
+imprimirCampoBatalla campo = do
+   print $ pokedex campo
+   print $ ataquedex campo
+   print $ entrenador1 campo
+   print $ entrenador2 campo
