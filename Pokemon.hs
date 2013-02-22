@@ -25,12 +25,11 @@ where
 
 import Data.List
 import Data.Char
-import Data.Array
 import Data.Maybe
 
 data CampoBatalla
    = CampoBatalla
-    { pokedex :: Array Int Especie
+    { pokedex :: [Especie]
     , ataquedex :: [Ataque] 
     , entrenador1 :: [Monstruo]
     , entrenador2 :: [Monstruo]
@@ -129,8 +128,8 @@ crearEspecie datos
       where
          tuplaTipo = read $ "("++datos!!2++","++datos!!3++")"::Either Tipo (Tipo,Tipo)
          
-buscarEspecie :: Array Int Especie -> Int -> Especie
-buscarEspecie pokedex numeroEspecie = pokedex!numeroEspecie
+buscarEspecie :: [Especie] -> Int -> Especie
+buscarEspecie pokedex numeroEspecie = pokedex!!numeroEspecie
   
 imprimirEspecie :: Especie -> IO()
 imprimirEspecie especie = do
@@ -172,7 +171,7 @@ buscarAtaque ataqueDex nombre cotaMinima cotaMaxima
          mid = cotaMinima + ((cotaMaxima-cotaMinima) `div` 2)
 
   
-crearMonstruo :: Array Int Especie -> [Ataque] -> [String] -> Monstruo
+crearMonstruo :: [Especie] -> [Ataque] -> [String] -> Monstruo
 crearMonstruo pokedex ataqueDex datos = 
    Monstruo {especie = especieMonstruo,
       sobreNombre = datos!!1,
@@ -317,15 +316,13 @@ daño atacante defensor ataque = golpeFinal
    segundaLista tipo = elem tipo ((\(a,b,c)-> b)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    terceraLista tipo = elem tipo ((\(a,b,c)-> c)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    
-crearPokedex :: [[String]] -> Array Int Especie
-crearPokedex listaEspecies = array (1,251) [(i, x) | i <- [1..251], x <- [(!!) especies (i-1)]]
-   where
-      especies = map crearEspecie listaEspecies
+crearPokedex :: [[String]] -> [Especie]
+crearPokedex listaEspecies = map crearEspecie listaEspecies
       
 crearAtaquedex :: [[String]] -> [Ataque]
 crearAtaquedex listaAtaques = map crearAtaque listaAtaques
 
-crearEntrenador :: Array Int Especie -> [Ataque] -> [[String]] -> [Monstruo]
+crearEntrenador :: [Especie] -> [Ataque] -> [[String]] -> [Monstruo]
 crearEntrenador pokedex ataquedex listaMonstruos = map (crearMonstruo pokedex ataquedex) listaMonstruos
 
 imprimirAyudaEntrenador :: [Monstruo] -> Monstruo -> IO()
@@ -362,8 +359,9 @@ imprimirAyudaEntrenador listaMonstruos actual = do
          print $ puntoPoder $ fromJust(ataque4 actual)
    else
       putStrLn ""
+   
   
-crearCampoBatalla :: Array Int Especie -> [Ataque] -> [Monstruo] -> [Monstruo] -> CampoBatalla
+crearCampoBatalla :: [Especie] -> [Ataque] -> [Monstruo] -> [Monstruo] -> CampoBatalla
 crearCampoBatalla especies ataques trainer1 trainer2 =
    CampoBatalla {pokedex = especies,
                ataquedex = ataques,
