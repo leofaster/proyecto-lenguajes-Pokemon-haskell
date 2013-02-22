@@ -177,17 +177,37 @@ import Pokemon
                     -- else
                      -- do
                        -- menu campoBatalla 1 0 1
+                       
+                       
+menu :: CampoBatalla -> IO()
+menu a =     putStrLn "hi "
+
+                  
 main :: IO()        
 main = do 
     argumentos <- getArgs
-    if (length argumentos /= 1) 
+    if (length argumentos /= 4) 
     then
         putStrLn "Error: Falta la direccion de uno de los archivos. Alto" 
     else
       do
        especies <- readFile (argumentos!!0)   
-       listo <- return ((map (splitOn ",") (lines especies)))
-       print listo
+       especiesListo <- return ((map (splitOn ",") (lines especies)))
+       --let pokedex = crearPokedex listo
+       
+       ataques <- readFile (argumentos!!1) 
+       ataquesListo <- return ((map (splitOn ",") (lines ataques)))
+       
+       entrenador1 <- readFile (argumentos!!2) 
+       entrenador1Listo <- return ((map (splitOn ",") (lines entrenador1)))
+       
+       entrenador2 <- readFile (argumentos!!3) 
+       entrenador2Listo <- return ((map (splitOn ",") (lines entrenador2)))
+       
+       
+       
+       let campoBatalla = crearCampoBatalla  (crearPokedex especiesListo) (crearAtaquedex ataquesListo) (crearEntrenador (crearPokedex especiesListo) (crearAtaquedex ataquesListo) entrenador1Listo ) (crearEntrenador (crearPokedex especiesListo) (crearAtaquedex ataquesListo) entrenador2Listo  )
+       print campoBatalla
        putStrLn "" 
        
       -- return ((map (splitOn ",") (lines especies)))     -- Tomarlo en cuenta para crearEspecie. Ya esta la lista de especies.               

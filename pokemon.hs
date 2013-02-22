@@ -1,5 +1,6 @@
 module Pokemon
   (Tipo (Bug, Dark, Dragon, Electric, Fighting, Fire, Flying, Ghost, Grass, Ground, Ice, Normal, Poison, Psychic, Rock, Steel, Water)
+  , CampoBatalla ( pokedex , ataquedex, entrenador1,entrenador2)
   , maxHp
   , estadisticaAtaque
   , estadisticaDefensa
@@ -20,6 +21,15 @@ where
 import Data.List
 import Data.Char
 import Data.Array
+
+data CampoBatalla
+   = CampoBatalla
+    { pokedex :: Array Int Especie
+    , ataquedex :: [Ataque] 
+    , entrenador1 :: [Monstruo]
+    , entrenador2 :: [Monstruo]
+    }
+  deriving (Read, Show)
 
 data Tipo
   = Bug
@@ -289,16 +299,6 @@ crearAtaquedex listaAtaques = map crearAtaque listaAtaques
 
 crearEntrenador :: Array Int Especie -> [Ataque] -> [[String]] -> [Monstruo]
 crearEntrenador pokedex ataquedex listaMonstruos = map (crearMonstruo pokedex ataquedex) listaMonstruos
-
-
-data CampoBatalla
-   = CampoBatalla
-    { pokedex :: Array Int Especie
-    , ataquedex :: [Ataque] 
-    , entrenador1 :: [Monstruo]
-    , entrenador2 :: [Monstruo]
-    }
-  deriving Show
   
 crearCampoBatalla :: Array Int Especie -> [Ataque] -> [Monstruo] -> [Monstruo] -> CampoBatalla
 crearCampoBatalla especies ataques trainer1 trainer2 =
