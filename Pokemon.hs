@@ -101,12 +101,6 @@ data Monstruo
     , ataque4 :: Maybe Ataque
     }
   deriving (Read, Show)
-  
--- aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> Monstruo
--- aplicarAtaque atacante defensor ataque = defensor{hp = hp-round(dañoAtaque)}
---    where
---       dañoAtaque = daño atacante defensor ataque
-
 
 crearEspecie :: [String] -> Especie
 crearEspecie datos
@@ -377,10 +371,18 @@ cambiarMonstruo listaMonstruos numeroMonstruo
    where 
       longitudMonstruos = length listaMonstruos
       
+      
 evaluarVelocidad :: Monstruo -> Monstruo -> Int
 evaluarVelocidad monstruo1 monstruo2
    | velocidadM monstruo1 >= velocidadM monstruo2 = 1
    | otherwise = 2
+   
+   
+aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> Monstruo
+aplicarAtaque atacante defensor ataque = defensor{hp = hp defensor - dañoAtaque}
+   where
+      dañoAtaque = round(daño atacante defensor ataque)
+      
   
 crearCampoBatalla :: [Especie] -> [Ataque] -> [Monstruo] -> [Monstruo] -> CampoBatalla
 crearCampoBatalla especies ataques trainer1 trainer2 =
