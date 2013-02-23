@@ -1,9 +1,9 @@
 module Pokemon
   (Tipo (Bug, Dark, Dragon, Electric, Fighting, Fire, Flying, Ghost, Grass, Ground, Ice, Normal, Poison, Psychic, Rock, Steel, Water)
-  , CampoBatalla
-  , Especie
-  , Ataque
-  , Monstruo
+  , CampoBatalla (..)
+  , Especie (..)
+  , Ataque (..)
+  , Monstruo (..)
   , maxHp
   , estadisticaAtaque
   , estadisticaDefensa
@@ -316,6 +316,9 @@ daño atacante defensor ataque = golpeFinal
    segundaLista tipo = elem tipo ((\(a,b,c)-> b)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    terceraLista tipo = elem tipo ((\(a,b,c)-> c)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    
+aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> Monstruo
+aplicarAtaque atacante defensor ataque = 
+   
 crearPokedex :: [[String]] -> [Especie]
 crearPokedex listaEspecies = map crearEspecie listaEspecies
       
@@ -359,7 +362,15 @@ imprimirAyudaEntrenador listaMonstruos actual = do
          print $ puntoPoder $ fromJust(ataque4 actual)
    else
       putStrLn ""
-   
+      
+cambiarMonstruo :: [Monstruo] -> Int -> [Monstruo]
+cambiarMonstruo listaMonstruos numeroMonstruo 
+   | longitudMonstruos >=2 = 
+      listaMonstruos!!(numeroMonstruo-1):take (numeroMonstruo-2) listaMonstruos++
+      drop (numeroMonstruo+2) listaMonstruos 
+   | otherwise = listaMonstruos
+   where 
+      longitudMonstruos = length listaMonstruos
   
 crearCampoBatalla :: [Especie] -> [Ataque] -> [Monstruo] -> [Monstruo] -> CampoBatalla
 crearCampoBatalla especies ataques trainer1 trainer2 =
