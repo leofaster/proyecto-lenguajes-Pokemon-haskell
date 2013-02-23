@@ -400,6 +400,10 @@ evaluarVelocidad monstruo1 monstruo2
    | velocidadM monstruo1 >= velocidadM monstruo2 = 1
    | otherwise = 2
    
+
+actualizarEstado :: [Monstruo] -> [Monstruo] -> (Monstruo, Monstruo) -> ([Monstruo],[Monstruo])
+actualizarEstado monstruos1 monstruos2 nuevoEstado = 
+   (fst nuevoEstado:tail monstruos1, snd nuevoEstado:tail monstruos2)
    
 aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> (Monstruo, Monstruo)
 aplicarAtaque atacante defensor ataque = 
