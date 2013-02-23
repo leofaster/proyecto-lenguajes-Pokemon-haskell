@@ -17,6 +17,7 @@ module Pokemon
   , imprimirEspecie
   , imprimirMonstruo
   , buscarAtaque
+  , evaluarVelocidad
   , crearEntrenador
   , crearCampoBatalla
   , imprimirCampoBatalla
@@ -316,8 +317,8 @@ daño atacante defensor ataque = golpeFinal
    segundaLista tipo = elem tipo ((\(a,b,c)-> b)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    terceraLista tipo = elem tipo ((\(a,b,c)-> c)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    
-aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> Monstruo
-aplicarAtaque atacante defensor ataque = 
+-- aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> Monstruo
+-- aplicarAtaque atacante defensor ataque = 
    
 crearPokedex :: [[String]] -> [Especie]
 crearPokedex listaEspecies = map crearEspecie listaEspecies
@@ -371,6 +372,11 @@ cambiarMonstruo listaMonstruos numeroMonstruo
    | otherwise = listaMonstruos
    where 
       longitudMonstruos = length listaMonstruos
+      
+evaluarVelocidad :: Monstruo -> Monstruo -> Int
+evaluarVelocidad monstruo1 monstruo2
+   | velocidadM monstruo1 >= velocidadM monstruo2 = 1
+   | otherwise = 2
   
 crearCampoBatalla :: [Especie] -> [Ataque] -> [Monstruo] -> [Monstruo] -> CampoBatalla
 crearCampoBatalla especies ataques trainer1 trainer2 =
