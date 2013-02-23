@@ -17,6 +17,7 @@ module Pokemon
   , imprimirEspecie
   , imprimirMonstruo
   , buscarAtaque
+  , aplicarAtaque
   , evaluarVelocidad
   , crearEntrenador
   , imprimirAyudaEntrenador
@@ -361,7 +362,14 @@ imprimirAyudaEntrenador listaMonstruos actual = do
          print $ puntoPoder $ fromJust(ataque4 actual)
    else
       putStrLn ""
-      
+   imprimirMonstruos (tail listaMonstruos) 2
+
+imprimirMonstruos :: [Monstruo] -> Int ->IO()
+imprimirMonstruos (x:xs) i = do
+   putStr $ nombreEspecie $ especie x
+   putStrLn (show i)
+   imprimirMonstruos xs (i+1)
+   
 cambiarMonstruo :: [Monstruo] -> Int -> [Monstruo]
 cambiarMonstruo listaMonstruos numeroMonstruo 
    | longitudMonstruos >=2 = 
