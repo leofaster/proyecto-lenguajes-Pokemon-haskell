@@ -4,13 +4,6 @@ module Pokemon
   , Especie (..)
   , Ataque (..)
   , Monstruo (..)
-  , maxHp
-  , estadisticaAtaque
-  , estadisticaDefensa
-  , estadisticaAtaqueE
-  , estadisticaDefensaE
-  , estadisticaVelocidad
-  , daño
   , crearPokedex
   , crearAtaquedex
   , buscarEspecie
@@ -332,8 +325,8 @@ daño atacante defensor ataque = golpeFinal
    
 crearPokedex :: [[String]] -> [Especie]
 crearPokedex listaEspecies = map crearEspecie listaEspecies
-      
-      
+  
+
 crearAtaquedex :: [[String]] -> [Ataque]
 crearAtaquedex listaAtaques = map crearAtaque listaAtaques
 
@@ -394,8 +387,8 @@ cambiarMonstruo listaMonstruos numeroMonstruo
    where 
       longitudMonstruos = length listaMonstruos
       (primeraMitad, segundaMitad) = splitAt numeroMonstruo listaMonstruos
-      
-      
+  
+   
 evaluarVelocidad :: Monstruo -> Monstruo -> Int
 evaluarVelocidad monstruo1 monstruo2
    | velocidadM monstruo1 >= velocidadM monstruo2 = 1
