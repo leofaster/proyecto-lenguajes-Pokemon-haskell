@@ -104,6 +104,7 @@ data Monstruo
     }
   deriving (Read, Show)
 
+  
 crearEspecie :: [String] -> Especie
 crearEspecie datos
    | null $ datos!!3 = Especie {numero = read $ datos!!0::Int, 
@@ -130,9 +131,11 @@ crearEspecie datos
                         evolucion = datos!!11}
       where
          tuplaTipo = read $ "("++datos!!2++","++datos!!3++")"::Either Tipo (Tipo,Tipo)
+
          
 buscarEspecie :: [Especie] -> Int -> Especie
 buscarEspecie pokedex numeroEspecie = pokedex!!numeroEspecie
+  
   
 imprimirEspecie :: Especie -> IO()
 imprimirEspecie especie = do
@@ -200,7 +203,8 @@ crearMonstruo pokedex ataqueDex datos =
       nivelMonstruo = read $ datos!!2::Int
       numeroEspecie = read $ datos!!0::Int
       longitudAtaques = length ataqueDex
-      
+  
+  
 imprimirMonstruo :: Monstruo -> IO()
 imprimirMonstruo monstruo = do
    putStr "Especie: "
@@ -226,17 +230,22 @@ imprimirMonstruo monstruo = do
 maxHp ::  Especie -> Int -> Int
 maxHp especie nivel = ((31 + 2 * hpEspecie especie + 255 `quot` 4 + 100) * nivel `div` 100 ) + 10  
 
+
 estadisticaAtaque :: Especie -> Int -> Int
 estadisticaAtaque especie nivel = ((31 + 2 * ataque especie + 63) * nivel `div` 100 ) + 5 
+
 
 estadisticaDefensa :: Especie -> Int -> Int
 estadisticaDefensa especie nivel = ((31 + 2 * defensa especie + 63) * nivel `div` 100 ) + 5 
 
+
 estadisticaAtaqueE :: Especie -> Int -> Int
 estadisticaAtaqueE especie nivel = ((31 + 2 * ataqueEspecial especie + 63) * nivel `div` 100 ) + 5 
 
+
 estadisticaDefensaE :: Especie -> Int -> Int
 estadisticaDefensaE especie nivel = ((31 + 2 * defensaEspecial especie + 63) * nivel `div` 100 ) + 5 
+
 
 estadisticaVelocidad :: Especie -> Int -> Int
 estadisticaVelocidad especie nivel = ((31 + 2 * velocidad especie + 63) * nivel `div` 100 ) + 5 
@@ -323,23 +332,26 @@ daño atacante defensor ataque = golpeFinal
 crearPokedex :: [[String]] -> [Especie]
 crearPokedex listaEspecies = map crearEspecie listaEspecies
       
+      
 crearAtaquedex :: [[String]] -> [Ataque]
 crearAtaquedex listaAtaques = map crearAtaque listaAtaques
+
 
 crearEntrenador :: [Especie] -> [Ataque] -> [[String]] -> [Monstruo]
 crearEntrenador pokedex ataquedex listaMonstruos = map (crearMonstruo pokedex ataquedex) listaMonstruos
 
+
 imprimirAyudaEntrenador :: [Monstruo] -> Monstruo -> IO()
 imprimirAyudaEntrenador listaMonstruos actual = do
    putStrLn "Lista de Ataques:"
-   putStr "Ataque 1: "
+   putStr "Ataque 0: "
    print $ nombreAtaque $ fromJust(ataque1 actual)
    putStr "PP: "
    print $ puntoPoder $ fromJust(ataque1 actual)
    if ataque2 actual /= Nothing 
    then
       do
-         putStr "Ataque 2: "
+         putStr "Ataque 1: "
          print $ nombreAtaque $ fromJust(ataque2 actual)
          putStr "PP: "
          print $ puntoPoder $ fromJust(ataque2 actual)
@@ -348,7 +360,7 @@ imprimirAyudaEntrenador listaMonstruos actual = do
    if ataque3 actual /= Nothing 
    then
       do
-         putStr "Ataque 3: "
+         putStr "Ataque 2: "
          print $ nombreAtaque $ fromJust(ataque3 actual)
          putStr "PP: "
          print $ puntoPoder $ fromJust(ataque3 actual)
@@ -357,28 +369,30 @@ imprimirAyudaEntrenador listaMonstruos actual = do
    if ataque4 actual /= Nothing 
    then
       do
-         putStr "Ataque 4: "
+         putStr "Ataque 3: "
          print $ nombreAtaque $ fromJust(ataque4 actual)
          putStr "PP: "
          print $ puntoPoder $ fromJust(ataque4 actual)
    else
       putStrLn ""
-   imprimirMonstruos (tail listaMonstruos) 2
+   imprimirMonstruos (tail listaMonstruos) 1
 
+   
 imprimirMonstruos :: [Monstruo] -> Int ->IO()
 imprimirMonstruos (x:xs) i = do
    putStr $ nombreEspecie $ especie x
    putStrLn (show i)
    imprimirMonstruos xs (i+1)
    
+   
 cambiarMonstruo :: [Monstruo] -> Int -> [Monstruo]
 cambiarMonstruo listaMonstruos numeroMonstruo 
-   | longitudMonstruos >=2 = 
-      listaMonstruos!!(numeroMonstruo-1):take (numeroMonstruo-2) listaMonstruos++
-      drop (numeroMonstruo+2) listaMonstruos 
-   | otherwise = listaMonstruos
+   | 0<=numeroMonstruo && numeroMonstruo<longitudMonstruos = 
+      head segundaMitad : (primeraMitad ++ tail segundaMitad)
+   | otherwise = listaMonstruos!!(longitudMonstruos - 1):take (longitudMonstruos - 1) listaMonstruos
    where 
       longitudMonstruos = length listaMonstruos
+      (primeraMitad, segundaMitad) = splitAt numeroMonstruo listaMonstruos
       
       
 evaluarVelocidad :: Monstruo -> Monstruo -> Int
@@ -387,10 +401,24 @@ evaluarVelocidad monstruo1 monstruo2
    | otherwise = 2
    
    
-aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> Monstruo
-aplicarAtaque atacante defensor ataque = defensor{hp = hp defensor - dañoAtaque}
+aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> (Monstruo, Monstruo)
+aplicarAtaque atacante defensor ataque = 
+   (defensor{hp = hp defensor - dañoAtaque}, restarPoder atacante ataque)
    where
       dañoAtaque = round(daño atacante defensor ataque)
+
+restarPoder :: Monstruo -> Ataque -> Monstruo
+restarPoder monstruo ataque =
+   if ataque == fromJust(ataque1 monstruo)
+   then monstruo {ataque1 = Just(ataque {puntoPoder = puntoPoder ataque - 1})}
+   else
+      if ataque == fromJust(ataque2 monstruo)
+      then monstruo {ataque2 = Just(ataque {puntoPoder = puntoPoder ataque - 1})}
+      else
+         if ataque == fromJust(ataque3 monstruo)
+         then monstruo {ataque3 = Just(ataque {puntoPoder = puntoPoder ataque - 1})}
+         else
+            monstruo {ataque4 = Just(ataque {puntoPoder = puntoPoder ataque - 1})}
       
   
 crearCampoBatalla :: [Especie] -> [Ataque] -> [Monstruo] -> [Monstruo] -> CampoBatalla
