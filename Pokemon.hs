@@ -15,6 +15,7 @@ module Pokemon
   , crearAtaquedex
   , buscarEspecie
   , imprimirEspecie
+  , cambiarMonstruo
   , imprimirMonstruo
   , buscarAtaque
   , aplicarAtaque
