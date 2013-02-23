@@ -24,6 +24,7 @@ module Pokemon
   , imprimirAyudaEntrenador
   , crearCampoBatalla
   , imprimirCampoBatalla
+  , actualizarEstado
   )
 where
 
