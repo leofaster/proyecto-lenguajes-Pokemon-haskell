@@ -1,16 +1,31 @@
 -- Nombre del archivo: pokesim.hs
 
-module Main (
-main ) where
+
 
 --import Pokemon
 import System.IO
 import System.Environment
 import Data.List.Split
 import Pokemon
+import Data.Char
 
-	            
-
+	                       
+menu :: CampoBatalla -> IO()           
+menu CampoBatalla = do
+  
+  putStrLn
+    $  "Bienvenido a Pokesim!\n "
+    ++ "Opcines para Elegir \n"  
+    ++ " Atacar n \n"
+    ++ " Cambiar n  \n"
+    ++ " Rendirse \n"
+    ++ " Info \n"
+    ++ " Ayuda \n"
+  putStr "Su Seleccion: "
+  hFlush stdout
+  sele <- getLine
+  putStrLn ""
+ 
 -- --menu :: fIRMA POR DEFINIR 
 -- --menu especies ataques entrenador1 entrenador2 turno rendicion1 rendicion2 = 
 -- menu campoBatalla turno rendicion1 rendicion2 = 
@@ -178,9 +193,7 @@ import Pokemon
                      -- do
                        -- menu campoBatalla 1 0 1
                        
-                       
-menu :: CampoBatalla -> IO()
-menu a =     putStrLn "hi "
+
 
                   
 main :: IO()        
@@ -193,13 +206,14 @@ main = do
       do
        especies <- readFile (argumentos!!0)   
        especiesListo <- return ((map (splitOn ",") (lines especies)))
-       --let pokedex = crearPokedex listo
        
        ataques <- readFile (argumentos!!1) 
        ataquesListo <- return ((map (splitOn ",") (lines ataques)))
        
+       
        entrenador1 <- readFile (argumentos!!2) 
        entrenador1Listo <- return ((map (splitOn ",") (lines entrenador1)))
+      -- print entrenador1Listo
        
        entrenador2 <- readFile (argumentos!!3) 
        entrenador2Listo <- return ((map (splitOn ",") (lines entrenador2)))
@@ -207,7 +221,7 @@ main = do
        
        
        let campoBatalla = crearCampoBatalla  (crearPokedex especiesListo) (crearAtaquedex ataquesListo) (crearEntrenador (crearPokedex especiesListo) (crearAtaquedex ataquesListo) entrenador1Listo ) (crearEntrenador (crearPokedex especiesListo) (crearAtaquedex ataquesListo) entrenador2Listo  )
-       print campoBatalla
+       print $ elems $ crearPokedex especiesListo
        putStrLn "" 
        
       -- return ((map (splitOn ",") (lines especies)))     -- Tomarlo en cuenta para crearEspecie. Ya esta la lista de especies.               
