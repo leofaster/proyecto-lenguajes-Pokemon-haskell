@@ -19,6 +19,7 @@ module Pokemon
   , buscarAtaque
   , evaluarVelocidad
   , crearEntrenador
+  , imprimirAyudaEntrenador
   , crearCampoBatalla
   , imprimirCampoBatalla
   )
@@ -100,6 +101,11 @@ data Monstruo
     , ataque4 :: Maybe Ataque
     }
   deriving (Read, Show)
+  
+-- aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> Monstruo
+-- aplicarAtaque atacante defensor ataque = defensor{hp = hp-round(dañoAtaque)}
+--    where
+--       dañoAtaque = daño atacante defensor ataque
 
 
 crearEspecie :: [String] -> Especie
@@ -317,8 +323,6 @@ daño atacante defensor ataque = golpeFinal
    segundaLista tipo = elem tipo ((\(a,b,c)-> b)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    terceraLista tipo = elem tipo ((\(a,b,c)-> c)  (relacionAtaqueTipo  (tipoAtaque ataque)))
    
--- aplicarAtaque :: Monstruo -> Monstruo -> Ataque -> Monstruo
--- aplicarAtaque atacante defensor ataque = 
    
 crearPokedex :: [[String]] -> [Especie]
 crearPokedex listaEspecies = map crearEspecie listaEspecies
